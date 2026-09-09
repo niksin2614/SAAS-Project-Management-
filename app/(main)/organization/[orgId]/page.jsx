@@ -69,8 +69,10 @@ export default async function OrganizationPage({ params }) {
           </div>
         </TabsContent>
 
-        <TabsContent value="chat" className="mt-0">
-          <OrgChat orgId={organization.id} orgName={organization.name} />
+        <TabsContent value="chat" className="mt-0 flex justify-center w-full">
+          <div className="w-full max-w-5xl h-[680px]">
+            <OrgChat orgId={organization.id} orgName={organization.name} />
+          </div>
         </TabsContent>
       </Tabs>
     </div>

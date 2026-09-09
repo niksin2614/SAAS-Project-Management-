@@ -176,7 +176,7 @@ export default function OrgChat({ orgId, orgName }) {
   );
 
   return (
-    <div className="flex flex-col h-[760px] max-h-[88vh] bg-gradient-to-b from-[#0b0f19] via-[#0d1322] to-[#080b12] text-slate-100 rounded-3xl overflow-hidden border border-indigo-500/20 shadow-[0_25px_70px_rgba(0,0,0,0.85)] ring-1 ring-white/10 font-sans">
+    <div className="flex flex-col h-full min-h-[500px] max-h-[720px] w-full max-w-5xl mx-auto bg-gradient-to-b from-[#0b0f19] via-[#0d1322] to-[#080b12] text-slate-100 rounded-2xl sm:rounded-3xl overflow-hidden border border-indigo-500/20 shadow-[0_25px_70px_rgba(0,0,0,0.85)] ring-1 ring-white/10 font-sans">
       {/* Modern Header */}
       <div className="px-6 py-4.5 bg-slate-950/80 border-b border-slate-800/80 backdrop-blur-2xl flex items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">

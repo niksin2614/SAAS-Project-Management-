@@ -45,7 +45,7 @@ export default function ChatWidget({ orgId, orgName, buttonVariant = "floating" 
       )}
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-3xl sm:max-w-4xl bg-slate-950 border-0 p-0 overflow-hidden text-slate-100 sm:rounded-3xl shadow-[0_25px_80px_rgba(0,0,0,0.9)]">
+        <DialogContent className="max-w-4xl w-[95vw] h-[650px] max-h-[85vh] bg-slate-950 border border-slate-800 p-0 overflow-hidden text-slate-100 rounded-2xl sm:rounded-3xl shadow-[0_25px_80px_rgba(0,0,0,0.95)]">
           <OrgChat orgId={orgId} orgName={orgName} />
         </DialogContent>
       </Dialog>
