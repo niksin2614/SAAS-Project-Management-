@@ -10,8 +10,16 @@ import { Toaster } from "sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "SYNCD - Agile Project Management",
+  title: {
+    default: "SYNCD — Agile Project Management",
+    template: "%s | SYNCD",
+  },
   description: "Streamline your workflow with SYNCD, an intuitive agile project management tool.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }) {
