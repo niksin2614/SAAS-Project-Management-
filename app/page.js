@@ -74,40 +74,41 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="container mx-auto py-20 text-center">
-        <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-white pb-6 max-w-5xl mx-auto leading-tight">
+      <section className="container mx-auto py-12 sm:py-16 px-4 text-center">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white pb-3 max-w-3xl mx-auto leading-tight">
           Streamline Your Workflow with{" "}
           <span className="gradient-title inline-block">SYNCD</span>
         </h1>
-        <p className="text-xl text-gray-300 mb-10 max-w-3xl mx-auto">
+        <p className="text-sm sm:text-base text-gray-300 mb-8 max-w-xl mx-auto">
           Empower your team with our intuitive project management solution.
         </p>
-        <p className="text-xl mb-12 max-w-2xl mx-auto"></p>
-        <Link href="/onboarding">
-          <Button size="lg" className="mr-4">
-            Get Started <ChevronRight size={18} className="ml-1" />
-          </Button>
-        </Link>
-        <Link href="#features">
-          <Button size="lg" variant="outline">
-            Learn More
-          </Button>
-        </Link>
+        <div className="flex items-center justify-center gap-3">
+          <Link href="/onboarding">
+            <Button size="sm" className="h-9 px-4 text-xs sm:text-sm rounded-lg font-semibold">
+              Get Started <ChevronRight size={15} className="ml-1" />
+            </Button>
+          </Link>
+          <Link href="#features">
+            <Button size="sm" variant="outline" className="h-9 px-4 text-xs sm:text-sm rounded-lg">
+              Learn More
+            </Button>
+          </Link>
+        </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="bg-gray-900 py-20 px-5">
-        <div className="container mx-auto">
-          <h3 className="text-3xl font-bold mb-12 text-center">Key Features</h3>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <section id="features" className="bg-gray-900/60 py-12 sm:py-16 px-4 border-y border-slate-800/80">
+        <div className="container mx-auto max-w-5xl">
+          <h3 className="text-xl sm:text-2xl font-bold mb-8 text-center text-white">Key Features</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {features.map((feature, index) => (
-              <Card key={index} className="bg-gray-800">
-                <CardContent className="pt-6">
-                  <feature.icon className="h-12 w-12 mb-4 text-blue-300" />
-                  <h4 className="text-xl font-semibold mb-2">
+              <Card key={index} className="bg-gray-800/80 border-slate-700/60 rounded-xl shadow-lg">
+                <CardContent className="p-5">
+                  <feature.icon className="h-7 w-7 mb-3 text-blue-400" />
+                  <h4 className="text-base font-semibold mb-1.5 text-white">
                     {feature.title}
                   </h4>
-                  <p className="text-gray-300">{feature.description}</p>
+                  <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">{feature.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -116,16 +117,20 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section className="bg-gray-900 py-20 px-5">
-        <div className="container mx-auto">
-          <h3 className="text-3xl font-bold mb-12 text-center">
+      <section className="bg-gray-900/40 py-12 sm:py-16 px-4">
+        <div className="container mx-auto max-w-3xl">
+          <h3 className="text-xl sm:text-2xl font-bold mb-8 text-center text-white">
             Frequently Asked Questions
           </h3>
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger>{faq.question}</AccordionTrigger>
-                <AccordionContent>{faq.answer}</AccordionContent>
+              <AccordionItem key={index} value={`item-${index}`} className="border-slate-800">
+                <AccordionTrigger className="text-xs sm:text-sm font-semibold text-slate-200 hover:text-white py-3">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                  {faq.answer}
+                </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
@@ -133,18 +138,18 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 text-center px-5">
-        <div className="container mx-auto">
-          <h3 className="text-3xl font-bold mb-6">
+      <section className="py-12 sm:py-16 text-center px-4">
+        <div className="container mx-auto max-w-2xl">
+          <h3 className="text-xl sm:text-2xl font-bold mb-2.5 text-white">
             Ready to Transform Your Workflow?
           </h3>
-          <p className="text-xl mb-12">
+          <p className="text-xs sm:text-sm text-gray-300 mb-6 max-w-lg mx-auto">
             Join thousands of teams already using SYNCD to streamline their
             projects and boost productivity.
           </p>
           <Link href="/onboarding">
-            <Button size="lg" className="animate-bounce">
-              Start For Free <ArrowRight className="ml-2 h-5 w-5" />
+            <Button size="sm" className="h-9 px-5 text-xs sm:text-sm rounded-lg font-semibold bg-blue-600 hover:bg-blue-500 shadow-md">
+              Start For Free <ArrowRight className="ml-1.5 h-4 w-4" />
             </Button>
           </Link>
         </div>
