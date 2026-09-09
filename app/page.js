@@ -15,8 +15,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import Logo from "@/components/logo";
-import { auth } from "@clerk/nextjs/server";
 
 const faqs = [
   {
@@ -73,36 +71,21 @@ const features = [
 ];
 
 export default function Home() {
-  let targetUrl = "/onboarding";
-  let buttonLabel = "Get Started";
-
-  try {
-    const { userId, orgId, orgSlug } = auth();
-    if (userId && orgId) {
-      targetUrl = `/organization/${orgSlug || orgId}`;
-      buttonLabel = "Go to Workspace";
-    }
-  } catch (e) {
-    // Default fallback
-  }
-
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="container mx-auto py-20 text-center">
-        <h1 className="text-6xl sm:text-7xl lg:text-8xl font-extrabold gradient-title pb-6 flex flex-col items-center">
-          Streamline Your Workflow <br />
-          <span className="flex mx-auto gap-3 sm:gap-5 items-center mt-2">
-            with <Logo size="lg" />
-          </span>
+        <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-white pb-6 max-w-5xl mx-auto leading-tight">
+          Streamline Your Workflow with{" "}
+          <span className="gradient-title inline-block">SYNCD</span>
         </h1>
         <p className="text-xl text-gray-300 mb-10 max-w-3xl mx-auto">
           Empower your team with our intuitive project management solution.
         </p>
         <p className="text-xl mb-12 max-w-2xl mx-auto"></p>
-        <Link href={targetUrl}>
+        <Link href="/onboarding">
           <Button size="lg" className="mr-4">
-            {buttonLabel} <ChevronRight size={18} className="ml-1" />
+            Get Started <ChevronRight size={18} className="ml-1" />
           </Button>
         </Link>
         <Link href="#features">
@@ -159,9 +142,9 @@ export default function Home() {
             Join thousands of teams already using SYNCD to streamline their
             projects and boost productivity.
           </p>
-          <Link href={targetUrl}>
+          <Link href="/onboarding">
             <Button size="lg" className="animate-bounce">
-              {buttonLabel} <ArrowRight className="ml-2 h-5 w-5" />
+              Start For Free <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
         </div>
