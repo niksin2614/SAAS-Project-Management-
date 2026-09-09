@@ -36,9 +36,24 @@ export async function createSprint(projectId, data) {
     }
   }
 
+  // Determine unique sprint name within project
+  let sprintName = data.name;
+  if (!sprintName) {
+    const existingCount = await db.sprint.count({ where: { projectId } });
+    sprintName = `${project.key}-${existingCount + 1}`;
+  }
+
+  // If a sprint with this name already exists in this project, auto-increment suffix
+  let candidateName = sprintName;
+  let counter = 1;
+  while (await db.sprint.findFirst({ where: { projectId, name: candidateName } })) {
+    candidateName = `${sprintName}-${counter}`;
+    counter++;
+  }
+
   const sprint = await db.sprint.create({
     data: {
-      name: data.name,
+      name: candidateName,
       startDate: data.startDate,
       endDate: data.endDate,
       status: "PLANNED",

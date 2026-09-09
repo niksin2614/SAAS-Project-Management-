@@ -71,7 +71,7 @@ export default function OrgChat({ orgId, orgName }) {
   };
 
   useEffect(() => {
-    if (orgId) {
+    if (orgId && orgId !== "[orgId]") {
       loadMessages(true);
       const interval = setInterval(() => {
         loadMessages(false);
