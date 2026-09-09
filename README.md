@@ -11,41 +11,41 @@ A modern, full-stack project management platform built with **Next.js 14 (App Ro
 
 ---
 
-## ✨ Key Features & Innovations
+## Key Features & Innovations
 
-### 🚀 1. Real-Time Interactive Sprint Board
+### 1. Real-Time Interactive Sprint Board
 - **Drag-and-Drop Workflow**: Smooth task reordering and status column progression powered by `@hello-pangea/dnd`.
 - **Zero-Latency Optimistic Updates**: Tasks appear, update, and delete instantly with 0ms delay.
 - **Live Background Heartbeat**: Automatic multi-user synchronization keeping all active sprint boards updated live without manual page reloads.
 - **Sprint Management**: Plan, start, and complete sprints with overdue tracking and active status badges.
 
-### 🔑 2. Unique Organization Join Code System
+### 2. Unique Organization Join Code System
 - **1-Click Team Onboarding**: Solves empty organization sprawl by allowing team members to join existing workspaces using a unique 6-digit code (`SYNCD-XXXXXX`) or direct share link.
 - **Admin Regeneration Controls**: Workspace admins can view, copy, or regenerate invite codes anytime.
 - **Instant Role Enrollment**: Automatically assigns team member permissions upon code entry.
 
-### 🎯 3. Linear-Inspired Fast Issue Creator
+### 3. Linear-Inspired Fast Issue Creator
 - **Keyboard-First Experience**: Create and save issues instantly with **`Ctrl + Enter`** / **`Cmd + Enter`**.
 - **Interactive Priority Control**: 4-button segmented selector with active status indicators (🟢 Low, 🔵 Medium, 🟡 High, 🔴 Urgent).
 - **1-Click Description Templates**: Instant templates for **⚡ User Stories**, **🐞 Bug Reports**, and **📋 Task Checklists**.
 - **Live Write & Preview**: Distraction-free markdown editor with instant preview.
 
-### 💬 4. Integrated Team Collaboration Hub
+### 4. Integrated Team Collaboration Hub
 - **Real-Time Project Chat**: Persistent workspace chat channel for team discussions and quick sprint coordination.
 - **Floating Chat Widget**: Access team discussions from any project view with unread badges and user avatars.
 
-### 📅 5. Polished Sprint Calendar & Duration Presets
+### 5. Polished Sprint Calendar & Duration Presets
 - **Custom Date Range Picker**: Dark glassmorphic calendar with gradient range selection pills.
 - **1-Click Duration Chips**: Fast presets for **1 Week (7d)**, **2 Weeks (14d)**, **3 Weeks (21d)**, and **4 Weeks (28d)**.
 
-### 🔐 6. Enterprise-Grade Multi-Tenant Authentication
+### 6. Enterprise-Grade Multi-Tenant Authentication
 - Full Clerk integration for secure sign-in, user profiles, and organization switching.
 - Role-based permissions protecting admin-only board moves and sprint state changes.
 - Automated email alerts upon task assignment.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: [Next.js 14](https://nextjs.org/) (App Router, Server Actions, API Routes)
 - **Frontend**: [React 18](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), [Shadcn UI](https://ui.shadcn.com/), [Radix UI](https://www.radix-ui.com/)
@@ -58,7 +58,7 @@ A modern, full-stack project management platform built with **Next.js 14 (App Ro
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 ├── actions/                  # Next.js Server Actions (issues, sprints, projects, chat, invites)
@@ -83,8 +83,7 @@ A modern, full-stack project management platform built with **Next.js 14 (App Ro
 ```
 
 ---
-
-## 🚀 Getting Started Locally
+## Getting Started Locally
 
 ### 1. Clone the Repository
 ```bash
@@ -147,6 +146,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
