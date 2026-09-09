@@ -194,7 +194,7 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
         <p className="text-red-500 mt-2">{updateIssuesError.message}</p>
       )}
       {(updateIssuesLoading || issuesLoading) && (
-        <BarLoader className="mt-4" width={"100%"} color="#36d7b7" />
+        <BarLoader className="mt-4" width={"100%"} color="#3b82f6" />
       )}
 
       <DragDropContext onDragEnd={onDragEnd}>

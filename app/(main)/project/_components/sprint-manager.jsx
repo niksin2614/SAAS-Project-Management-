@@ -134,7 +134,7 @@ export default function SprintManager({
         </div>
       </div>
 
-      {loading && <BarLoader width={"100%"} className="mt-2" color="#36d7b7" />}
+      {loading && <BarLoader width={"100%"} className="mt-2" color="#3b82f6" />}
       {getStatusText() && (
         <Badge variant="outline" className="mt-3 text-sm px-3 py-1 font-semibold border-slate-700 bg-slate-900 text-slate-200 self-start">
           {getStatusText()}

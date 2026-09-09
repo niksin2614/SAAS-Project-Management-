@@ -121,7 +121,7 @@ export default function CreateProjectPage() {
           )}
         </div>
         {loading && (
-          <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />
+          <BarLoader className="mb-4" width={"100%"} color="#3b82f6" />
         )}
         <Button
           type="submit"

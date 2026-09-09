@@ -115,7 +115,7 @@ export default function IssueDetailsDialog({
           </div>
         </DialogHeader>
         {(updateLoading || deleteLoading) && (
-          <BarLoader width={"100%"} color="#36d7b7" />
+          <BarLoader width={"100%"} color="#3b82f6" />
         )}
         <div className="space-y-6 pt-2">
           <div className="flex items-center space-x-3">
