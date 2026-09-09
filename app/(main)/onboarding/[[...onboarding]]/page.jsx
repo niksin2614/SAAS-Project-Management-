@@ -32,12 +32,12 @@ export default function Onboarding() {
     }
   }, [searchParams]);
 
-  // If already in an organization and not joining via code, redirect
+  // If already in an organization and not joining via code, redirect immediately
   useEffect(() => {
     if (isLoaded && organization && !searchParams.get("code")) {
       const slugOrId = organization.slug || organization.id;
       if (slugOrId) {
-        router.push(`/organization/${slugOrId}`);
+        router.replace(`/organization/${slugOrId}`);
       }
     }
   }, [organization, isLoaded, router, searchParams]);
@@ -63,6 +63,21 @@ export default function Onboarding() {
       setIsJoining(false);
     }
   };
+
+  // If already in an organization and redirecting, show a clean transition loader instead of creation forms
+  if (isLoaded && organization && !searchParams.get("code")) {
+    return (
+      <div className="w-full min-h-[60vh] flex flex-col items-center justify-center gap-4 py-16">
+        <div className="relative flex items-center justify-center">
+          <div className="absolute w-12 h-12 rounded-full bg-blue-500/20 blur-md animate-pulse" />
+          <Loader2 className="h-9 w-9 animate-spin text-blue-500 relative z-10" />
+        </div>
+        <p className="text-sm font-medium text-slate-400 animate-pulse">
+          Opening {organization.name}&apos;s Workspace...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8 sm:py-12 flex flex-col items-center justify-center min-h-[75vh]">

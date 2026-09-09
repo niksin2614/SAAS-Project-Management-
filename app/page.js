@@ -16,6 +16,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Logo from "@/components/logo";
+import { auth } from "@clerk/nextjs/server";
 
 const faqs = [
   {
@@ -72,6 +73,19 @@ const features = [
 ];
 
 export default function Home() {
+  let targetUrl = "/onboarding";
+  let buttonLabel = "Get Started";
+
+  try {
+    const { userId, orgId, orgSlug } = auth();
+    if (userId && orgId) {
+      targetUrl = `/organization/${orgSlug || orgId}`;
+      buttonLabel = "Go to Workspace";
+    }
+  } catch (e) {
+    // Default fallback
+  }
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -86,9 +100,9 @@ export default function Home() {
           Empower your team with our intuitive project management solution.
         </p>
         <p className="text-xl mb-12 max-w-2xl mx-auto"></p>
-        <Link href="/onboarding">
+        <Link href={targetUrl}>
           <Button size="lg" className="mr-4">
-            Get Started <ChevronRight size={18} className="ml-1" />
+            {buttonLabel} <ChevronRight size={18} className="ml-1" />
           </Button>
         </Link>
         <Link href="#features">
@@ -145,9 +159,9 @@ export default function Home() {
             Join thousands of teams already using SYNCD to streamline their
             projects and boost productivity.
           </p>
-          <Link href="/onboarding">
+          <Link href={targetUrl}>
             <Button size="lg" className="animate-bounce">
-              Start For Free <ArrowRight className="ml-2 h-5 w-5" />
+              {buttonLabel} <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
         </div>

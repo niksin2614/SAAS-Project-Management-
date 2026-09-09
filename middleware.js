@@ -11,13 +11,26 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware((auth, req) => {
-  if (!auth().userId && isProtectedRoute(req)) {
+  const { userId, orgId, orgSlug } = auth();
+
+  if (!userId && isProtectedRoute(req)) {
     return auth().redirectToSignIn();
   }
 
+  // If user already has an active organization and visits /onboarding directly without an invite code, redirect straight to their organization workspace
   if (
-    auth().userId &&
-    !auth().orgId &&
+    userId &&
+    orgId &&
+    req.nextUrl.pathname.startsWith("/onboarding") &&
+    !req.nextUrl.searchParams.get("code")
+  ) {
+    const orgTarget = orgSlug || orgId;
+    return NextResponse.redirect(new URL(`/organization/${orgTarget}`, req.url));
+  }
+
+  if (
+    userId &&
+    !orgId &&
     req.nextUrl.pathname !== "/onboarding" &&
     !req.nextUrl.pathname.startsWith("/organization") &&
     !req.nextUrl.pathname.startsWith("/project") &&
