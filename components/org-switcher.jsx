@@ -35,8 +35,8 @@ const OrgSwitcher = () => {
           appearance={{
             elements: {
               organizationSwitcherTrigger:
-                "border border-gray-300 rounded-md px-5 py-2",
-              organizationSwitcherTriggerIcon: "text-white",
+                "border border-slate-700 bg-slate-900 rounded-lg px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-800 transition-colors h-8 sm:h-9",
+              organizationSwitcherTriggerIcon: "text-slate-400",
             },
           }}
         />

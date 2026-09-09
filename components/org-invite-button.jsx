@@ -74,9 +74,10 @@ export default function OrgInviteButton({ orgId, orgName, variant = "default" })
       <Button
         onClick={fetchCode}
         variant={variant === "outline" ? "outline" : "default"}
-        className="h-11 px-4 rounded-xl bg-slate-900 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 font-semibold text-sm flex items-center gap-2 transition-all shadow-md"
+        size="sm"
+        className="h-8 sm:h-9 px-3 rounded-lg bg-slate-900 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 font-semibold text-xs sm:text-sm flex items-center gap-1.5 transition-all shadow-sm"
       >
-        <UserPlus className="w-4 h-4 text-blue-400" />
+        <UserPlus className="w-3.5 h-3.5 text-blue-400" />
         <span>Invite Code</span>
       </Button>
 

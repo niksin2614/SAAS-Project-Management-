@@ -94,16 +94,16 @@ export default function SprintManager({
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <Select value={sprint.id} onValueChange={handleSprintChange}>
-          <SelectTrigger className="bg-slate-950 border-slate-800 text-slate-100 h-12 text-base font-medium px-4 w-full sm:w-auto min-w-[340px]">
+          <SelectTrigger className="bg-slate-950 border-slate-800 text-slate-100 h-9 text-xs sm:text-sm font-medium px-3 w-full sm:w-auto min-w-[260px] rounded-lg">
             <SelectValue placeholder="Select Sprint" />
           </SelectTrigger>
           <SelectContent className="bg-slate-900 border-slate-800 text-slate-100">
             {sprints.map((sprint) => (
-              <SelectItem key={sprint.id} value={sprint.id} className="text-base py-2.5">
+              <SelectItem key={sprint.id} value={sprint.id} className="text-xs sm:text-sm py-2">
                 <span className="font-semibold">{sprint.name}</span>{" "}
-                <span className="text-slate-400 text-sm">
+                <span className="text-slate-400 text-xs">
                   ({format(sprint.startDate, "MMM d, yyyy")} to {format(sprint.endDate, "MMM d, yyyy")})
                 </span>
               </SelectItem>
@@ -111,12 +111,13 @@ export default function SprintManager({
           </SelectContent>
         </Select>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {isAdmin && canStart && (
             <Button
               onClick={() => handleStatusChange("ACTIVE")}
               disabled={loading}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-12 px-6 text-base shadow-lg shadow-emerald-600/20"
+              size="sm"
+              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-9 px-4 text-xs sm:text-sm rounded-lg shadow-md shadow-emerald-600/20"
             >
               Start Sprint
             </Button>
@@ -126,7 +127,8 @@ export default function SprintManager({
               onClick={() => handleStatusChange("COMPLETED")}
               disabled={loading}
               variant="destructive"
-              className="font-bold h-12 px-6 text-base shadow-lg shadow-red-600/20"
+              size="sm"
+              className="font-bold h-9 px-4 text-xs sm:text-sm rounded-lg shadow-md shadow-red-600/20"
             >
               End Sprint
             </Button>
@@ -136,7 +138,7 @@ export default function SprintManager({
 
       {loading && <BarLoader width={"100%"} className="mt-2" color="#3b82f6" />}
       {getStatusText() && (
-        <Badge variant="outline" className="mt-3 text-sm px-3 py-1 font-semibold border-slate-700 bg-slate-900 text-slate-200 self-start">
+        <Badge variant="outline" className="mt-2 text-xs px-2.5 py-0.5 font-semibold border-slate-700 bg-slate-900 text-slate-200 self-start">
           {getStatusText()}
         </Badge>
       )}

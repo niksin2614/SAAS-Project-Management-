@@ -26,36 +26,36 @@ export default async function OrganizationPage({ params }) {
 
   return (
     <div className="container mx-auto px-4 pb-12">
-      <div className="mb-6 flex flex-col sm:flex-row justify-between items-start gap-4">
+      <div className="mb-4 sm:mb-5 flex flex-col sm:flex-row justify-between items-start gap-3">
         <div>
-          <h1 className="text-4xl sm:text-5xl font-bold gradient-title pb-2">
+          <h1 className="text-2xl sm:text-3xl font-extrabold gradient-title pb-1">
             {organization.name}&rsquo;s Workspace
           </h1>
-          <p className="text-slate-400 text-sm">
+          <p className="text-slate-400 text-xs sm:text-sm">
             Manage projects, track assigned sprint issues, and collaborate with your team in real time.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 flex-wrap">
           <OrgInviteButton orgId={organization.id} orgName={organization.name} />
           <OrgSwitcher />
         </div>
       </div>
 
       <Tabs defaultValue="projects" className="w-full">
-        <TabsList className="bg-slate-900 border border-slate-800 p-1 mb-6">
+        <TabsList className="bg-slate-900 border border-slate-800 p-1 mb-4 h-9">
           <TabsTrigger
             value="projects"
-            className="flex items-center gap-2 data-[state=active]:bg-blue-600 data-[state=active]:text-white font-medium"
+            className="flex items-center gap-1.5 text-xs py-1 px-3 data-[state=active]:bg-blue-600 data-[state=active]:text-white font-medium"
           >
-            <LayoutGrid className="w-4 h-4" />
+            <LayoutGrid className="w-3.5 h-3.5" />
             Projects & Issues
           </TabsTrigger>
           <TabsTrigger
             value="chat"
-            className="flex items-center gap-2 data-[state=active]:bg-blue-600 data-[state=active]:text-white font-medium"
+            className="flex items-center gap-1.5 text-xs py-1 px-3 data-[state=active]:bg-blue-600 data-[state=active]:text-white font-medium"
           >
-            <MessageSquare className="w-4 h-4" />
+            <MessageSquare className="w-3.5 h-3.5" />
             Team Hub Chat
           </TabsTrigger>
         </TabsList>

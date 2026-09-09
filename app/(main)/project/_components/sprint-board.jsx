@@ -198,7 +198,7 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
       )}
 
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-6 bg-slate-900/90 border border-slate-800/80 p-5 rounded-xl shadow-xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-4 bg-slate-900/90 border border-slate-800/80 p-3 sm:p-4 rounded-xl shadow-lg">
           {statuses.map((column) => {
             const columnIssues = filteredIssues?.filter((issue) => issue.status === column.key) || [];
 
@@ -208,18 +208,18 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="space-y-3 bg-slate-950/40 p-3 rounded-lg border border-slate-800/50 flex flex-col min-h-[500px]"
+                    className="space-y-2.5 bg-slate-950/40 p-2.5 rounded-lg border border-slate-800/50 flex flex-col min-h-[420px]"
                   >
-                    <div className="flex items-center justify-between pb-2 border-b border-slate-800/80 px-1">
-                      <h3 className="font-bold text-sm tracking-wider uppercase text-slate-300">
+                    <div className="flex items-center justify-between pb-1.5 border-b border-slate-800/80 px-1">
+                      <h3 className="font-bold text-xs tracking-wider uppercase text-slate-300">
                         {column.name}
                       </h3>
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">
+                      <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-slate-800 text-slate-300">
                         {columnIssues.length}
                       </span>
                     </div>
 
-                    <div className="space-y-3 flex-1">
+                    <div className="space-y-2 flex-1">
                       {columnIssues.map((issue, index) => (
                         <Draggable
                           key={issue.id}
@@ -260,10 +260,11 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
                       currentSprint.status !== "COMPLETED" && (
                         <Button
                           variant="ghost"
-                          className="w-full h-11 text-sm font-semibold border border-dashed border-slate-800 hover:border-slate-600 hover:bg-slate-900 text-slate-300 hover:text-white mt-2"
+                          size="sm"
+                          className="w-full h-8 text-xs font-semibold border border-dashed border-slate-800 hover:border-slate-600 hover:bg-slate-900 text-slate-300 hover:text-white mt-1 rounded-lg"
                           onClick={() => handleAddIssue(column.key)}
                         >
-                          <Plus className="mr-2 h-4 w-4 text-blue-400" />
+                          <Plus className="mr-1.5 h-3.5 w-3.5 text-blue-400" />
                           Create Issue
                         </Button>
                       )}
