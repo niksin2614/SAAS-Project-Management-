@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
-  CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -14,11 +12,31 @@ import IssueDetailsDialog from "./issue-details-dialog";
 import UserAvatar from "./user-avatar";
 import { useRouter } from "next/navigation";
 
-const priorityColor = {
-  LOW: "border-green-600",
-  MEDIUM: "border-yellow-300",
-  HIGH: "border-orange-400",
-  URGENT: "border-red-400",
+const priorityConfig = {
+  LOW: {
+    label: "Low",
+    dot: "bg-emerald-400",
+    text: "text-emerald-300",
+    border: "border-emerald-500/30",
+  },
+  MEDIUM: {
+    label: "Medium",
+    dot: "bg-sky-400",
+    text: "text-sky-300",
+    border: "border-sky-500/30",
+  },
+  HIGH: {
+    label: "High",
+    dot: "bg-amber-400",
+    text: "text-amber-300",
+    border: "border-amber-500/30",
+  },
+  URGENT: {
+    label: "Urgent",
+    dot: "bg-rose-400",
+    text: "text-rose-300",
+    border: "border-rose-500/30",
+  },
 };
 
 export default function IssueCard({
@@ -44,30 +62,41 @@ export default function IssueCard({
     addSuffix: true,
   });
 
+  const pConfig = priorityConfig[issue.priority] || priorityConfig.MEDIUM;
+
   return (
     <>
       <Card
-        className="cursor-pointer hover:shadow-lg hover:border-slate-700 transition-all bg-slate-950/90 border-slate-800/90 rounded-lg overflow-hidden"
+        className="cursor-pointer bg-[#0b0b0e] border border-white/[0.08] hover:border-white/[0.22] hover:bg-[#101015] transition-all duration-150 rounded-xl overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.5)] group"
         onClick={() => setIsDialogOpen(true)}
       >
-        <CardHeader
-          className={`border-t-2 ${priorityColor[issue.priority]} p-3 pb-1.5`}
-        >
-          <CardTitle className="text-xs sm:text-sm font-semibold text-slate-100 leading-snug line-clamp-2">
+        <CardHeader className="p-3.5 pb-2">
+          {/* Priority and Status badges */}
+          <div className="flex items-center gap-1.5 mb-2">
+            <span
+              className={`inline-flex items-center gap-1.5 text-[10px] font-mono font-medium px-2 py-0.5 rounded-full bg-white/[0.04] border ${pConfig.border} ${pConfig.text}`}
+            >
+              <span className={`w-1.5 h-1.5 rounded-full ${pConfig.dot}`} />
+              {pConfig.label}
+            </span>
+
+            {showStatus && (
+              <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/[0.1] text-neutral-300">
+                {issue.status}
+              </span>
+            )}
+          </div>
+
+          <CardTitle className="text-xs sm:text-sm font-semibold text-neutral-200 group-hover:text-white leading-snug line-clamp-2">
             {issue.title}
           </CardTitle>
         </CardHeader>
 
-        <CardContent className="flex gap-1.5 p-3 pt-0 pb-1.5">
-          {showStatus && <Badge className="text-[10px] font-semibold px-2 py-0.2">{issue.status}</Badge>}
-          <Badge variant="outline" className="text-[10px] font-medium px-2 py-0.2 border-slate-800 text-slate-300 bg-slate-900/60">
-            {issue.priority}
-          </Badge>
-        </CardContent>
-        <CardFooter className="flex flex-col items-start space-y-1.5 p-3 pt-1.5 border-t border-slate-900/80">
+        <CardFooter className="flex items-center justify-between p-3.5 pt-2 border-t border-white/[0.06]">
           <UserAvatar user={issue.assignee} size="sm" />
-
-          <div className="text-[11px] font-normal text-slate-400 w-full">Created {created}</div>
+          <span className="text-[10px] font-mono text-neutral-400">
+            {created}
+          </span>
         </CardFooter>
       </Card>
 
@@ -78,7 +107,7 @@ export default function IssueCard({
           issue={issue}
           onDelete={onDeleteHandler}
           onUpdate={onUpdateHandler}
-          borderCol={priorityColor[issue.priority]}
+          borderCol={pConfig.border}
         />
       )}
     </>

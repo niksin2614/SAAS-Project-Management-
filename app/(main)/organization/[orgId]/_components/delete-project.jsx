@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, Loader2 } from "lucide-react";
 import { useOrganization } from "@clerk/nextjs";
 import { deleteProject } from "@/actions/projects";
 import { useRouter } from "next/navigation";
@@ -22,7 +22,7 @@ export default function DeleteProject({ projectId }) {
   const isAdmin = membership?.role === "org:admin";
 
   const handleDelete = async () => {
-    if (window.confirm("Are you sure you want to delete this project?")) {
+    if (window.confirm("Are you sure you want to delete this project? This will remove all associated sprints and issues.")) {
       deleteProjectFn(projectId);
     }
   };
@@ -41,13 +41,20 @@ export default function DeleteProject({ projectId }) {
       <Button
         variant="ghost"
         size="sm"
-        className={`${isDeleting ? "animate-pulse" : ""}`}
+        className={`h-8 w-8 p-0 rounded-lg text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors ${
+          isDeleting ? "animate-pulse opacity-50" : ""
+        }`}
         onClick={handleDelete}
         disabled={isDeleting}
+        title="Delete project"
       >
-        <Trash2 className="h-4 w-4" />
+        {isDeleting ? (
+          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+        ) : (
+          <Trash2 className="h-3.5 w-3.5" />
+        )}
       </Button>
-      {error && <p className="text-red-500 text-sm">{error.message}</p>}
+      {error && <p className="text-rose-400 text-xs mt-1">{error.message}</p>}
     </>
   );
 }

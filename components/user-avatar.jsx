@@ -10,13 +10,17 @@ const UserAvatar = ({ user, size = "sm" }) => {
 
   return (
     <div className="flex items-center space-x-2">
-      <Avatar className={`${sizeClasses[size] || sizeClasses.sm} border border-slate-700 shadow-sm flex-shrink-0`}>
+      <Avatar
+        className={`${
+          sizeClasses[size] || sizeClasses.sm
+        } border border-white/10 shadow-sm flex-shrink-0`}
+      >
         <AvatarImage src={user?.imageUrl} alt={user?.name} />
-        <AvatarFallback className="capitalize bg-slate-800 font-bold text-slate-200">
+        <AvatarFallback className="capitalize bg-[#18181c] font-bold text-neutral-200">
           {user?.name ? user.name.charAt(0).toUpperCase() : "?"}
         </AvatarFallback>
       </Avatar>
-      <span className="text-xs font-medium text-slate-300 truncate max-w-[140px]">
+      <span className="text-xs font-medium text-neutral-300 truncate max-w-[140px]">
         {user ? user.name : "Unassigned"}
       </span>
     </div>

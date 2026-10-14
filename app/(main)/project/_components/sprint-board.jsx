@@ -20,8 +20,16 @@ import BoardFilters from "./board-filters";
 function reorder(list, startIndex, endIndex) {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
   return result;
 }
+
+const columnStatusDot = {
+  TODO: "bg-neutral-400",
+  IN_PROGRESS: "bg-sky-400",
+  IN_REVIEW: "bg-amber-400",
+  DONE: "bg-emerald-400",
+};
 
 export default function SprintBoard({ sprints, projectId, orgId }) {
   const { membership } = useOrganization();
@@ -71,6 +79,7 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
     }, 3000);
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSprint?.id]);
 
   const handleAddIssue = (status) => {
@@ -175,7 +184,7 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
     updateIssueOrderFn(sortedIssues);
   };
 
-  if (issuesError) return <div>Error loading issues</div>;
+  if (issuesError) return <div className="text-rose-400 py-6 text-sm">Error loading sprint issues</div>;
 
   return (
     <div className="flex flex-col">
@@ -191,35 +200,45 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
       )}
 
       {updateIssuesError && (
-        <p className="text-red-500 mt-2">{updateIssuesError.message}</p>
+        <p className="text-rose-400 text-xs mt-2">{updateIssuesError.message}</p>
       )}
       {(updateIssuesLoading || issuesLoading) && (
-        <BarLoader className="mt-4" width={"100%"} color="#3b82f6" />
+        <BarLoader className="mt-4" width={"100%"} color="#ffffff" />
       )}
 
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-4 bg-slate-900/90 border border-slate-800/80 p-3 sm:p-4 rounded-xl shadow-lg">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5 bg-[#060608] border border-white/[0.08] p-3 sm:p-4 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.8)]">
           {statuses.map((column) => {
             const columnIssues = filteredIssues?.filter((issue) => issue.status === column.key) || [];
+            const dotClass = columnStatusDot[column.key] || "bg-neutral-400";
 
             return (
               <Droppable key={column.key} droppableId={column.key}>
-                {(provided) => (
+                {(provided, snapshot) => (
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="space-y-2.5 bg-slate-950/40 p-2.5 rounded-lg border border-slate-800/50 flex flex-col min-h-[420px]"
+                    className={`space-y-3 bg-[#0a0a0d] p-3 rounded-xl border transition-colors flex flex-col min-h-[460px] ${
+                      snapshot.isDraggingOver
+                        ? "border-white/30 bg-[#0e0e12]"
+                        : "border-white/[0.08]"
+                    }`}
                   >
-                    <div className="flex items-center justify-between pb-1.5 border-b border-slate-800/80 px-1">
-                      <h3 className="font-bold text-xs tracking-wider uppercase text-slate-300">
-                        {column.name}
-                      </h3>
-                      <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-slate-800 text-slate-300">
+                    {/* Column Header */}
+                    <div className="flex items-center justify-between pb-2 border-b border-white/[0.08] px-1">
+                      <div className="flex items-center gap-2">
+                        <span className={`w-2 h-2 rounded-full ${dotClass}`} />
+                        <h3 className="font-mono font-bold text-xs tracking-wider uppercase text-neutral-300">
+                          {column.name}
+                        </h3>
+                      </div>
+                      <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/[0.08] text-neutral-400">
                         {columnIssues.length}
                       </span>
                     </div>
 
-                    <div className="space-y-2 flex-1">
+                    {/* Column Issue Cards Stack */}
+                    <div className="space-y-2.5 flex-1">
                       {columnIssues.map((issue, index) => (
                         <Draggable
                           key={issue.id}
@@ -227,11 +246,14 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
                           index={index}
                           isDragDisabled={updateIssuesLoading || !isAdmin}
                         >
-                          {(provided) => (
+                          {(provided, snapshot) => (
                             <div
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
+                              className={`transition-transform ${
+                                snapshot.isDragging ? "opacity-90 scale-[1.02] shadow-2xl" : ""
+                              }`}
                             >
                               <IssueCard
                                 issue={issue}
@@ -256,16 +278,17 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
                       {provided.placeholder}
                     </div>
 
+                    {/* Add issue button on TODO column */}
                     {column.key === "TODO" &&
                       currentSprint.status !== "COMPLETED" && (
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="w-full h-8 text-xs font-semibold border border-dashed border-slate-800 hover:border-slate-600 hover:bg-slate-900 text-slate-300 hover:text-white mt-1 rounded-lg"
+                          className="w-full h-9 text-xs font-semibold border border-dashed border-white/15 hover:border-white/30 hover:bg-white/[0.04] text-neutral-400 hover:text-white mt-1 rounded-xl transition-all flex items-center justify-center gap-1.5"
                           onClick={() => handleAddIssue(column.key)}
                         >
-                          <Plus className="mr-1.5 h-3.5 w-3.5 text-blue-400" />
-                          Create Issue
+                          <Plus className="h-3.5 w-3.5 text-neutral-300" />
+                          <span>Create Issue</span>
                         </Button>
                       )}
                   </div>

@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 
 import { BarLoader } from "react-spinners";
 import { formatDistanceToNow, isAfter, isBefore, format } from "date-fns";
@@ -18,6 +17,7 @@ import useFetch from "@/hooks/use-fetch";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useOrganization } from "@clerk/nextjs";
 import { updateSprintStatus } from "@/actions/sprints";
+import { Play, CheckCircle2, Clock, AlertTriangle } from "lucide-react";
 
 export default function SprintManager({
   sprint,
@@ -34,7 +34,6 @@ export default function SprintManager({
   const {
     fn: updateStatus,
     loading,
-    error,
     data: updatedStatus,
   } = useFetch(updateSprintStatus);
 
@@ -59,17 +58,37 @@ export default function SprintManager({
         status: updatedStatus.sprint.status,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updatedStatus, loading]);
 
-  const getStatusText = () => {
+  const getStatusInfo = () => {
     if (status === "COMPLETED") {
-      return `Sprint Ended`;
+      return {
+        text: "Sprint Ended",
+        icon: CheckCircle2,
+        badgeClass: "bg-white/[0.06] border-white/10 text-neutral-400",
+      };
     }
     if (status === "ACTIVE" && isAfter(now, endDate)) {
-      return `Overdue by ${formatDistanceToNow(endDate)}`;
+      return {
+        text: `Overdue by ${formatDistanceToNow(endDate)}`,
+        icon: AlertTriangle,
+        badgeClass: "bg-rose-500/10 border-rose-500/30 text-rose-300",
+      };
     }
     if (status === "PLANNED" && isBefore(now, startDate)) {
-      return `Starts in ${formatDistanceToNow(startDate)}`;
+      return {
+        text: `Starts in ${formatDistanceToNow(startDate)}`,
+        icon: Clock,
+        badgeClass: "bg-white/[0.04] border-white/10 text-neutral-400",
+      };
+    }
+    if (status === "ACTIVE") {
+      return {
+        text: `Active • Ends in ${formatDistanceToNow(endDate)}`,
+        icon: Play,
+        badgeClass: "bg-emerald-500/10 border-emerald-500/30 text-emerald-300",
+      };
     }
     return null;
   };
@@ -83,6 +102,7 @@ export default function SprintManager({
         setStatus(selectedSprint.status);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, sprints]);
 
   const handleSprintChange = (value) => {
@@ -92,19 +112,21 @@ export default function SprintManager({
     router.replace(`/project/${projectId}`, undefined, { shallow: true });
   };
 
+  const statusInfo = getStatusInfo();
+
   return (
     <>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <Select value={sprint.id} onValueChange={handleSprintChange}>
-          <SelectTrigger className="bg-slate-950 border-slate-800 text-slate-100 h-9 text-xs sm:text-sm font-medium px-3 w-full sm:w-auto min-w-[260px] rounded-lg">
+          <SelectTrigger className="bg-[#0b0b0e] border-white/[0.12] text-neutral-100 h-10 text-xs sm:text-sm font-medium px-3.5 w-full sm:w-auto min-w-[280px] rounded-xl shadow-sm">
             <SelectValue placeholder="Select Sprint" />
           </SelectTrigger>
-          <SelectContent className="bg-slate-900 border-slate-800 text-slate-100">
-            {sprints.map((sprint) => (
-              <SelectItem key={sprint.id} value={sprint.id} className="text-xs sm:text-sm py-2">
-                <span className="font-semibold">{sprint.name}</span>{" "}
-                <span className="text-slate-400 text-xs">
-                  ({format(sprint.startDate, "MMM d, yyyy")} to {format(sprint.endDate, "MMM d, yyyy")})
+          <SelectContent className="bg-[#0c0c0e] border border-white/10 text-neutral-100 shadow-xl">
+            {sprints.map((spr) => (
+              <SelectItem key={spr.id} value={spr.id} className="text-xs sm:text-sm py-2">
+                <span className="font-semibold text-white">{spr.name}</span>{" "}
+                <span className="text-neutral-500 text-xs font-mono">
+                  ({format(spr.startDate, "MMM d")} - {format(spr.endDate, "MMM d, yyyy")})
                 </span>
               </SelectItem>
             ))}
@@ -117,30 +139,37 @@ export default function SprintManager({
               onClick={() => handleStatusChange("ACTIVE")}
               disabled={loading}
               size="sm"
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-9 px-4 text-xs sm:text-sm rounded-lg shadow-md shadow-emerald-600/20"
+              className="bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 font-semibold h-10 px-4 text-xs sm:text-sm rounded-xl transition-all flex items-center gap-1.5"
             >
-              Start Sprint
+              <Play className="w-3.5 h-3.5 fill-current" />
+              <span>Start Sprint</span>
             </Button>
           )}
           {isAdmin && canEnd && (
             <Button
               onClick={() => handleStatusChange("COMPLETED")}
               disabled={loading}
-              variant="destructive"
               size="sm"
-              className="font-bold h-9 px-4 text-xs sm:text-sm rounded-lg shadow-md shadow-red-600/20"
+              className="bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 font-semibold h-10 px-4 text-xs sm:text-sm rounded-xl transition-all flex items-center gap-1.5"
             >
-              End Sprint
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>Complete Sprint</span>
             </Button>
           )}
         </div>
       </div>
 
-      {loading && <BarLoader width={"100%"} className="mt-2" color="#3b82f6" />}
-      {getStatusText() && (
-        <Badge variant="outline" className="mt-2 text-xs px-2.5 py-0.5 font-semibold border-slate-700 bg-slate-900 text-slate-200 self-start">
-          {getStatusText()}
-        </Badge>
+      {loading && <BarLoader width={"100%"} className="mt-2" color="#ffffff" />}
+
+      {statusInfo && (
+        <div className="mt-2.5 self-start">
+          <span
+            className={`inline-flex items-center gap-1.5 text-[11px] font-mono px-2.5 py-1 rounded-full border ${statusInfo.badgeClass}`}
+          >
+            <statusInfo.icon className="w-3 h-3" />
+            <span>{statusInfo.text}</span>
+          </span>
+        </div>
       )}
     </>
   );

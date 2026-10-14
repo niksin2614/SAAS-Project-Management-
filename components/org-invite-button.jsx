@@ -75,66 +75,67 @@ export default function OrgInviteButton({ orgId, orgName, variant = "default" })
         onClick={fetchCode}
         variant={variant === "outline" ? "outline" : "default"}
         size="sm"
-        className="h-8 sm:h-9 px-3 rounded-lg bg-slate-900 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 font-semibold text-xs sm:text-sm flex items-center gap-1.5 transition-all shadow-sm"
+        className="h-8 sm:h-9 px-3 rounded-lg bg-[#0c0c0e] border border-white/[0.12] hover:border-white/[0.25] hover:bg-[#141418] text-neutral-200 font-semibold text-xs sm:text-sm flex items-center gap-1.5 transition-all shadow-sm"
       >
-        <UserPlus className="w-3.5 h-3.5 text-blue-400" />
+        <UserPlus className="w-3.5 h-3.5 text-neutral-300" />
         <span>Invite Code</span>
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-md bg-slate-950 border border-slate-800 p-6 text-slate-100 rounded-3xl shadow-2xl">
+        <DialogContent className="max-w-md bg-[#09090c] border border-white/[0.12] p-6 text-neutral-100 rounded-2xl shadow-[0_16px_50px_rgba(0,0,0,0.95)]">
           <DialogHeader className="pb-2">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white mb-3 shadow-lg shadow-blue-500/25">
-              <KeyRound className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-xl bg-black border border-white/[0.14] flex items-center justify-center text-white mb-2.5 shadow-md">
+              <KeyRound className="w-5 h-5 text-neutral-200" />
             </div>
-            <DialogTitle className="text-2xl font-bold text-white">
+            <DialogTitle className="text-xl font-bold text-white tracking-tight">
               Organization Invite Code
             </DialogTitle>
-            <DialogDescription className="text-sm text-slate-400">
-              Share this code or link with your teammates to let them join <strong className="text-slate-200">{orgName || "Organization"}</strong> instantly without creating a separate org.
+            <DialogDescription className="text-xs text-neutral-400">
+              Share this code or join link with your teammates to let them join{" "}
+              <strong className="text-neutral-200">{orgName || "Organization"}</strong> instantly without creating a separate org.
             </DialogDescription>
           </DialogHeader>
 
           {isLoading ? (
-            <div className="py-12 flex flex-col items-center justify-center text-slate-400 gap-3">
-              <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-              <p className="text-sm">Fetching team invite code...</p>
+            <div className="py-12 flex flex-col items-center justify-center text-neutral-400 gap-3">
+              <Loader2 className="w-7 h-7 animate-spin text-white" />
+              <p className="text-xs font-mono">Fetching workspace invite code...</p>
             </div>
           ) : inviteData ? (
-            <div className="space-y-5 pt-2">
+            <div className="space-y-4 pt-1">
               {/* Code Box */}
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 block">
+                <label className="text-[11px] font-mono font-bold uppercase tracking-wider text-neutral-400 mb-1.5 block">
                   Unique Join Code
                 </label>
                 <div className="flex items-center gap-2">
-                  <div className="flex-1 bg-slate-900 border-2 border-indigo-500/30 rounded-2xl p-3.5 text-center font-mono font-black text-xl sm:text-2xl tracking-widest text-indigo-300 shadow-inner selection:bg-indigo-600">
+                  <div className="flex-1 bg-black border border-white/[0.18] rounded-xl p-3 text-center font-mono font-bold text-xl tracking-[0.2em] text-white shadow-inner selection:bg-neutral-800">
                     {inviteData.code}
                   </div>
                   <Button
                     onClick={() => copyToClipboard(inviteData.code, "code")}
-                    className="h-14 px-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-lg shadow-indigo-600/20"
+                    className="h-12 px-4 rounded-xl bg-white hover:bg-neutral-200 text-black font-semibold shadow-md transition-all"
                   >
-                    {copiedCode ? <Check className="w-5 h-5 text-emerald-300" /> : <Copy className="w-5 h-5" />}
+                    {copiedCode ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                   </Button>
                 </div>
               </div>
 
               {/* Direct Link Box */}
               <div>
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 block">
+                <label className="text-[11px] font-mono font-bold uppercase tracking-wider text-neutral-400 mb-1.5 block">
                   Direct Join Link
                 </label>
                 <div className="flex items-center gap-2">
                   <Input
                     readOnly
                     value={inviteData.inviteUrl}
-                    className="bg-slate-900 border-slate-800 text-slate-300 text-xs h-11 font-mono rounded-xl truncate"
+                    className="bg-black border-white/[0.12] text-neutral-300 text-xs h-10 font-mono rounded-lg truncate"
                   />
                   <Button
                     onClick={() => copyToClipboard(inviteData.inviteUrl, "link")}
                     variant="outline"
-                    className="h-11 px-3.5 rounded-xl border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-200"
+                    className="h-10 px-3 rounded-lg border-white/[0.14] bg-[#0c0c0e] hover:bg-[#141418] text-neutral-200"
                   >
                     {copiedLink ? <Check className="w-4 h-4 text-emerald-400" /> : <Link2 className="w-4 h-4" />}
                   </Button>
@@ -142,24 +143,24 @@ export default function OrgInviteButton({ orgId, orgName, variant = "default" })
               </div>
 
               {/* How it works note */}
-              <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 text-xs text-slate-400 space-y-1.5">
-                <p className="font-semibold text-slate-300 flex items-center gap-1.5">
+              <div className="p-3.5 rounded-xl bg-black/60 border border-white/[0.08] text-xs text-neutral-400 space-y-1">
+                <p className="font-semibold text-neutral-200 flex items-center gap-1.5 text-xs">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" /> Instant Member Access
                 </p>
-                <p className="leading-relaxed">
-                  When new members sign in and enter this code on their onboarding screen, they will automatically join as a <strong>Member</strong> and go straight to the project dashboard.
+                <p className="text-[11px] leading-relaxed">
+                  When new members sign in and enter this code on onboarding, they will automatically join as a <strong>Member</strong> and proceed to the project dashboard.
                 </p>
               </div>
 
               {/* Admin actions */}
               {isAdmin && (
-                <div className="pt-2 border-t border-slate-800/80 flex justify-between items-center text-xs">
-                  <span className="text-slate-500">Need to reset access?</span>
+                <div className="pt-2 border-t border-white/[0.08] flex justify-between items-center text-xs">
+                  <span className="text-neutral-500 font-mono text-[11px]">Need to reset access?</span>
                   <Button
                     variant="ghost"
                     onClick={handleRegenerate}
                     disabled={isRegenerating}
-                    className="text-xs text-slate-400 hover:text-red-400 p-0 h-auto font-medium flex items-center gap-1"
+                    className="text-xs text-neutral-400 hover:text-red-400 p-0 h-auto font-medium flex items-center gap-1 transition-colors"
                   >
                     {isRegenerating ? (
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />

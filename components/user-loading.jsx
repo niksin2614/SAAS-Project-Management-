@@ -9,8 +9,8 @@ const UserLoading = () => {
 
   if (!isOrgLoaded || !isUserLoaded) {
     return (
-      <div className="w-full h-1 overflow-hidden bg-slate-900/60 rounded-full mb-3">
-        <div className="w-full h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 animate-pulse" />
+      <div className="w-full h-[2px] overflow-hidden bg-white/[0.05] relative">
+        <div className="w-1/3 h-full bg-gradient-to-r from-transparent via-white/80 to-transparent animate-[shimmer_1.5s_infinite]" />
       </div>
     );
   }

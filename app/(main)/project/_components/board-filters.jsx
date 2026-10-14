@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { X, Search } from "lucide-react";
+import { X, Search as SearchIcon } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -35,6 +35,7 @@ export default function BoardFilters({ issues, onFilterChange }) {
         (selectedPriority === "" || issue.priority === selectedPriority)
     );
     onFilterChange(filteredIssues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, selectedAssignees, selectedPriority, issues]);
 
   const toggleAssignee = (assigneeId) => {
@@ -58,16 +59,19 @@ export default function BoardFilters({ issues, onFilterChange }) {
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 mt-3 sm:mt-4">
+      <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 mt-4">
+        {/* Search Bar with Icon */}
         <div className="relative w-full sm:w-64">
+          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-neutral-400" />
           <Input
-            className="w-full h-9 text-xs sm:text-sm px-3 bg-slate-950 border-slate-800 text-slate-100 placeholder:text-slate-500 rounded-lg shadow-sm"
-            placeholder="Search issues..."
+            className="w-full h-10 text-xs sm:text-sm pl-9 pr-3 bg-[#0b0b0e] border-white/[0.12] focus-visible:border-white/50 text-neutral-100 placeholder:text-neutral-400 rounded-xl shadow-inner"
+            placeholder="Search tasks..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
+        {/* Assignee Stacking Filters */}
         {assignees.length > 0 && (
           <div className="flex-shrink-0">
             <div className="flex gap-1 flex-wrap items-center">
@@ -78,17 +82,17 @@ export default function BoardFilters({ issues, onFilterChange }) {
                   <div
                     key={assignee.id}
                     title={assignee.name}
-                    className={`rounded-full ring-1.5 cursor-pointer transition-transform hover:scale-110 ${
-                      selected ? "ring-blue-500 scale-105" : "ring-slate-800"
+                    className={`rounded-full ring-2 cursor-pointer transition-all hover:scale-110 ${
+                      selected ? "ring-white scale-105" : "ring-transparent opacity-70 hover:opacity-100"
                     } ${i > 0 ? "-ml-2.5" : ""}`}
                     style={{
                       zIndex: i,
                     }}
                     onClick={() => toggleAssignee(assignee.id)}
                   >
-                    <Avatar className="h-7 w-7 border border-slate-700 shadow-sm">
+                    <Avatar className="h-7 w-7 border border-white/20 shadow-md">
                       <AvatarImage src={assignee.imageUrl} />
-                      <AvatarFallback className="bg-slate-800 text-[10px] font-bold text-slate-200">
+                      <AvatarFallback className="bg-[#18181c] text-[10px] font-bold text-neutral-200">
                         {assignee.name ? assignee.name[0].toUpperCase() : "?"}
                       </AvatarFallback>
                     </Avatar>
@@ -99,13 +103,14 @@ export default function BoardFilters({ issues, onFilterChange }) {
           </div>
         )}
 
+        {/* Priority Select */}
         <Select value={selectedPriority} onValueChange={setSelectedPriority}>
-          <SelectTrigger className="w-full sm:w-44 h-9 text-xs sm:text-sm bg-slate-950 border-slate-800 text-slate-100 rounded-lg">
-            <SelectValue placeholder="Select priority" />
+          <SelectTrigger className="w-full sm:w-44 h-10 text-xs sm:text-sm bg-[#0b0b0e] border-white/[0.12] text-neutral-100 rounded-xl">
+            <SelectValue placeholder="All Priorities" />
           </SelectTrigger>
-          <SelectContent className="bg-slate-900 border-slate-800 text-slate-100">
+          <SelectContent className="bg-[#0c0c0e] border border-white/10 text-neutral-100 shadow-xl">
             {priorities.map((priority) => (
-              <SelectItem key={priority} value={priority} className="text-xs sm:text-sm py-1.5">
+              <SelectItem key={priority} value={priority} className="text-xs sm:text-sm py-2">
                 {priority}
               </SelectItem>
             ))}
@@ -117,7 +122,7 @@ export default function BoardFilters({ issues, onFilterChange }) {
             variant="ghost"
             size="sm"
             onClick={clearFilters}
-            className="h-9 px-3 text-xs font-semibold flex items-center text-slate-300 hover:text-white"
+            className="h-10 px-3 text-xs font-semibold flex items-center text-neutral-400 hover:text-white rounded-lg transition-colors"
           >
             <X className="mr-1.5 h-3.5 w-3.5" /> Clear Filters
           </Button>

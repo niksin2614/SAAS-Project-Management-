@@ -119,14 +119,20 @@ export async function joinOrganizationWithCode(code) {
     throw new Error("Please log in first to join an organization");
   }
 
-  if (!code) {
+  if (!code || typeof code !== "string" || !code.trim()) {
     throw new Error("Please enter a valid invite code");
   }
 
-  const normalizedCode = code.trim().toUpperCase();
+  const trimmedCode = code.trim().toUpperCase();
+  const withPrefix = trimmedCode.startsWith("SYNCD-") ? trimmedCode : `SYNCD-${trimmedCode}`;
 
-  const invite = await db.organizationInvite.findUnique({
-    where: { code: normalizedCode },
+  const invite = await db.organizationInvite.findFirst({
+    where: {
+      OR: [
+        { code: trimmedCode },
+        { code: withPrefix },
+      ],
+    },
   });
 
   if (!invite) {
@@ -139,6 +145,7 @@ export async function joinOrganizationWithCode(code) {
     user = await checkUser();
   }
 
+  let alreadyMember = false;
   // Add user to the Clerk organization as a member
   try {
     await clerkClient().organizations.createOrganizationMembership({
@@ -147,12 +154,18 @@ export async function joinOrganizationWithCode(code) {
       role: "org:member",
     });
   } catch (clerkErr) {
-    // If user is already a member, continue smoothly
     const errMessage = clerkErr?.errors?.[0]?.message || clerkErr.message || "";
     if (
-      !errMessage.toLowerCase().includes("already") &&
-      !errMessage.toLowerCase().includes("exists")
+      errMessage.toLowerCase().includes("already") ||
+      errMessage.toLowerCase().includes("exists")
     ) {
+      alreadyMember = true;
+    } else if (
+      errMessage.toLowerCase().includes("not found") ||
+      errMessage.toLowerCase().includes("does not exist")
+    ) {
+      throw new Error("This organization is no longer active or has been removed.");
+    } else {
       console.error("Clerk membership error:", clerkErr);
       throw new Error(errMessage || "Failed to join organization in Clerk");
     }
@@ -160,6 +173,7 @@ export async function joinOrganizationWithCode(code) {
 
   return {
     success: true,
+    alreadyMember,
     organizationId: invite.organizationId,
     orgName: invite.orgName,
   };

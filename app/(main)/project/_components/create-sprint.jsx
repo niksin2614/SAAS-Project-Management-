@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -14,7 +13,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { Calendar as CalendarIcon, Clock, Sparkles } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, Plus, X } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { format, addDays, differenceInDays } from "date-fns";
 
@@ -87,10 +86,21 @@ export default function SprintCreationForm({
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-5">
-        <h1 className="text-2xl sm:text-3xl font-extrabold gradient-title tracking-tight">
-          {projectTitle}
-        </h1>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-5 border-b border-white/[0.08]">
+        <div>
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-white/[0.06] border border-white/[0.1] text-neutral-300">
+              {projectKey}
+            </span>
+            <span className="text-[11px] font-mono text-neutral-500 uppercase tracking-wider">
+              Sprint Board
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+            {projectTitle}
+          </h1>
+        </div>
+
         <div className="flex items-center gap-2.5 flex-wrap">
           {orgId && (
             <>
@@ -101,26 +111,40 @@ export default function SprintCreationForm({
           {isAdmin && (
             <Button
               onClick={() => setShowForm(!showForm)}
-              variant={!showForm ? "default" : "destructive"}
               size="sm"
-              className="h-8 sm:h-9 text-xs sm:text-sm px-3.5 rounded-lg shadow-sm font-semibold"
+              className={`h-8 sm:h-9 text-xs sm:text-sm px-3.5 rounded-lg shadow-sm font-semibold transition-all flex items-center gap-1.5 ${
+                !showForm
+                  ? "bg-white hover:bg-neutral-200 text-black"
+                  : "bg-neutral-800 hover:bg-neutral-700 text-white border border-white/10"
+              }`}
             >
-              {!showForm ? "Create New Sprint" : "Cancel"}
+              {!showForm ? (
+                <>
+                  <Plus size={15} strokeWidth={2.5} />
+                  <span>Create Sprint</span>
+                </>
+              ) : (
+                <>
+                  <X size={15} />
+                  <span>Cancel</span>
+                </>
+              )}
             </Button>
           )}
         </div>
       </div>
+
       {showForm && (
-        <Card className="pt-3 mb-5 bg-slate-950/80 border-slate-800 shadow-xl backdrop-blur-xl rounded-xl">
-          <CardContent className="p-3 sm:p-4">
+        <Card className="mb-6 bg-[#09090c] border border-white/[0.12] shadow-2xl rounded-2xl overflow-hidden animate-in fade-in duration-200">
+          <CardContent className="p-4 sm:p-5">
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col md:flex-row gap-3 items-end"
+              className="flex flex-col md:flex-row gap-3.5 items-end"
             >
               <div className="flex-1 w-full">
                 <label
                   htmlFor="name"
-                  className="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1"
+                  className="block text-[11px] font-mono font-bold uppercase tracking-wider text-neutral-400 mb-1.5"
                 >
                   Sprint Name
                 </label>
@@ -128,16 +152,17 @@ export default function SprintCreationForm({
                   id="name"
                   {...register("name")}
                   readOnly
-                  className="bg-slate-900/90 border-slate-800 text-slate-200 font-semibold h-9 text-xs sm:text-sm rounded-lg shadow-inner"
+                  className="bg-[#050507] border-white/[0.12] text-neutral-200 font-mono font-semibold h-10 text-xs sm:text-sm rounded-xl shadow-inner"
                 />
                 {errors.name && (
-                  <p className="text-red-500 text-xs mt-1 font-medium">
+                  <p className="text-rose-400 text-xs mt-1 font-medium">
                     {errors.name.message}
                   </p>
                 )}
               </div>
+
               <div className="flex-1 w-full">
-                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                <label className="block text-[11px] font-mono font-bold uppercase tracking-wider text-neutral-400 mb-1.5">
                   Sprint Duration
                 </label>
                 <Controller
@@ -148,36 +173,36 @@ export default function SprintCreationForm({
                       <PopoverTrigger asChild>
                         <Button
                           variant="outline"
-                          className="w-full h-9 justify-between text-left font-medium bg-slate-900/90 border-slate-800 text-slate-200 hover:bg-slate-800/90 hover:text-white rounded-lg shadow-inner px-3 text-xs sm:text-sm transition-all"
+                          className="w-full h-10 justify-between text-left font-medium bg-[#050507] border-white/[0.12] text-neutral-200 hover:bg-[#101014] hover:text-white rounded-xl shadow-inner px-3.5 text-xs sm:text-sm transition-all"
                         >
-                          <div className="flex items-center gap-1.5 truncate">
-                            <CalendarIcon className="h-3.5 w-3.5 text-blue-400 shrink-0" />
+                          <div className="flex items-center gap-2 truncate">
+                            <CalendarIcon className="h-3.5 w-3.5 text-neutral-400 shrink-0" />
                             {dateRange?.from && dateRange?.to ? (
-                              <span className="text-xs sm:text-sm">
-                                {format(dateRange.from, "MMM dd, yyyy")} &rarr;{" "}
-                                {format(dateRange.to, "MMM dd, yyyy")}
+                              <span className="text-xs sm:text-sm font-mono">
+                                {format(dateRange.from, "MMM d")} &rarr;{" "}
+                                {format(dateRange.to, "MMM d, yyyy")}
                               </span>
                             ) : (
-                              <span className="text-slate-400 text-xs">Pick sprint dates</span>
+                              <span className="text-neutral-500 text-xs">Pick sprint dates</span>
                             )}
                           </div>
                           {daysCount > 0 && (
-                            <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-blue-950 border border-blue-800/60 text-blue-300 ml-1.5 shrink-0">
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.08] text-neutral-200 ml-1.5 shrink-0 border border-white/[0.1]">
                               {daysCount} {daysCount === 1 ? "day" : "days"}
                             </span>
                           )}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent
-                        className="w-auto p-0 bg-slate-950/95 border border-indigo-500/20 backdrop-blur-2xl shadow-2xl rounded-2xl overflow-hidden"
+                        className="w-auto p-0 bg-[#09090c] border border-white/[0.14] shadow-[0_16px_50px_rgba(0,0,0,0.95)] rounded-2xl overflow-hidden"
                         align="start"
                       >
                         {/* Quick Duration Presets */}
-                        <div className="p-3 border-b border-slate-800/80 bg-slate-900/50">
+                        <div className="p-3 border-b border-white/[0.08] bg-black/60">
                           <div className="flex items-center justify-between gap-2 mb-2">
-                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
-                              <Clock className="w-3 h-3 text-blue-400" />
-                              Quick Sprint Duration:
+                            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5">
+                              <Clock className="w-3 h-3 text-neutral-300" />
+                              Duration Presets
                             </span>
                           </div>
                           <div className="grid grid-cols-4 gap-1.5">
@@ -191,10 +216,10 @@ export default function SprintCreationForm({
                                 key={preset.days}
                                 type="button"
                                 onClick={() => setPresetDuration(preset.days, field.onChange)}
-                                className={`text-xs py-1.5 px-2 rounded-lg font-medium transition-all ${
+                                className={`text-xs py-1.5 px-2 rounded-lg font-mono transition-all ${
                                   daysCount === preset.days
-                                    ? "bg-blue-600 text-white shadow-sm font-bold"
-                                    : "bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white"
+                                    ? "bg-white text-black font-bold shadow-sm"
+                                    : "bg-neutral-900 hover:bg-neutral-800 text-neutral-300 border border-white/[0.08]"
                                 }`}
                               >
                                 {preset.label}
@@ -203,7 +228,7 @@ export default function SprintCreationForm({
                           </div>
                         </div>
 
-                        {/* Modern Styled Calendar */}
+                        {/* Calendar */}
                         <Calendar
                           mode="range"
                           disabled={[{ before: new Date() }]}
@@ -225,15 +250,16 @@ export default function SprintCreationForm({
                   )}
                 />
                 {createSprintError && (
-                  <p className="text-red-500 text-xs mt-1 font-medium">{createSprintError.message}</p>
+                  <p className="text-rose-400 text-xs mt-1 font-medium">{createSprintError.message}</p>
                 )}
               </div>
+
               <Button
                 type="submit"
                 disabled={createSprintLoading}
-                className="h-9 px-4 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-blue-600/20 active:scale-95 transition-all"
+                className="h-10 px-5 rounded-xl bg-white hover:bg-neutral-200 text-black font-semibold text-xs sm:text-sm shadow-md transition-all shrink-0 disabled:opacity-40"
               >
-                {createSprintLoading ? "Creating..." : "Create Sprint"}
+                {createSprintLoading ? "Creating..." : "Save Sprint"}
               </Button>
             </form>
           </CardContent>

@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useUser, useOrganization } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { format, isToday, isYesterday } from "date-fns";
 import {
@@ -12,12 +11,10 @@ import {
   MessageSquare,
   ShieldCheck,
   User as UserIcon,
-  Smile,
   Sparkles,
   Hash,
   Loader2,
   Search,
-  Zap,
 } from "lucide-react";
 import {
   getOrganizationMessages,
@@ -79,6 +76,7 @@ export default function OrgChat({ orgId, orgName }) {
 
       return () => clearInterval(interval);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orgId]);
 
   useEffect(() => {
@@ -176,64 +174,62 @@ export default function OrgChat({ orgId, orgName }) {
   );
 
   return (
-    <div className="flex flex-col h-full min-h-[500px] max-h-[720px] w-full max-w-5xl mx-auto bg-gradient-to-b from-[#0b0f19] via-[#0d1322] to-[#080b12] text-slate-100 rounded-2xl sm:rounded-3xl overflow-hidden border border-indigo-500/20 shadow-[0_25px_70px_rgba(0,0,0,0.85)] ring-1 ring-white/10 font-sans">
-      {/* Modern Header */}
-      <div className="px-6 py-4.5 bg-slate-950/80 border-b border-slate-800/80 backdrop-blur-2xl flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3.5">
+    <div className="flex flex-col h-full min-h-[500px] max-h-[720px] w-full max-w-5xl mx-auto bg-[#08080a] text-neutral-100 rounded-2xl sm:rounded-3xl overflow-hidden border border-white/[0.1] shadow-[0_25px_70px_rgba(0,0,0,0.9)] font-sans">
+      {/* Cinematic Header */}
+      <div className="px-5 py-3.5 bg-black/80 border-b border-white/[0.08] backdrop-blur-xl flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
           <div className="relative">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/25 ring-1 ring-white/20">
-              <MessageSquare className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-xl bg-black border border-white/[0.14] flex items-center justify-center text-white shadow-md">
+              <MessageSquare className="w-5 h-5 text-neutral-200" />
             </div>
-            <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full ring-2 ring-slate-950 flex items-center justify-center">
-              <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
-            </span>
+            <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full ring-2 ring-black flex items-center justify-center" />
           </div>
 
           <div>
-            <div className="flex items-center gap-2.5">
-              <h2 className="text-xl font-black text-white tracking-tight flex items-center gap-1.5">
-                <Hash className="w-4 h-4 text-indigo-400 opacity-80" />
-                {orgName || "Team"} Hub
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-1.5">
+                <Hash className="w-4 h-4 text-neutral-500" />
+                {orgName || "Team"} Channel
               </h2>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 shadow-sm">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Live Sync
+              <span className="inline-flex items-center gap-1 px-2 py-0.2 rounded-full text-[10px] font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+                Live
               </span>
             </div>
-            <p className="text-xs text-slate-400 font-medium">
-              Real-time collaboration & sprint discussions for all members
+            <p className="text-[11px] text-neutral-400">
+              Workspace collaboration & sprint coordination
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          {/* In-stream Search */}
+        <div className="flex items-center gap-2.5">
+          {/* Search Input */}
           <div className="relative hidden sm:block">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-3.5 h-3.5 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search chat..."
-              className="bg-slate-900/80 border border-slate-800 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 w-44 transition-all"
+              placeholder="Filter messages..."
+              className="bg-[#050507] border border-white/[0.1] rounded-lg pl-8 pr-3 py-1.5 text-xs text-neutral-200 placeholder:text-neutral-600 focus:outline-none focus:border-white/30 w-40 transition-all font-mono"
             />
           </div>
 
           <div
-            className={`px-3 py-1.5 rounded-xl border flex items-center gap-1.5 text-xs font-bold ${
+            className={`px-2.5 py-1 rounded-lg border flex items-center gap-1.5 text-xs font-mono font-medium ${
               isAdmin
-                ? "bg-purple-950/60 border-purple-700/80 text-purple-200 shadow-sm"
-                : "bg-slate-900 border-slate-700 text-slate-300"
+                ? "bg-white/[0.08] border-white/20 text-neutral-200"
+                : "bg-white/[0.04] border-white/10 text-neutral-400"
             }`}
           >
             {isAdmin ? (
               <>
-                <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />
+                <ShieldCheck className="w-3.5 h-3.5 text-neutral-200" />
                 <span>Admin</span>
               </>
             ) : (
               <>
-                <UserIcon className="w-3.5 h-3.5 text-blue-400" />
+                <UserIcon className="w-3.5 h-3.5 text-neutral-400" />
                 <span>Member</span>
               </>
             )}
@@ -244,33 +240,32 @@ export default function OrgChat({ orgId, orgName }) {
       {/* Message Feed Stream */}
       <div
         ref={chatContainerRef}
-        className="flex-1 overflow-y-auto px-6 py-6 space-y-4"
-        style={{ scrollbarWidth: "thin", scrollbarColor: "#334155 transparent" }}
+        className="flex-1 overflow-y-auto px-5 py-5 space-y-3"
       >
         {isLoading ? (
-          <div className="h-full flex flex-col items-center justify-center text-slate-400 gap-3">
-            <Loader2 className="w-10 h-10 animate-spin text-indigo-500" />
-            <p className="text-sm font-semibold">Connecting live sync channel...</p>
+          <div className="h-full flex flex-col items-center justify-center text-neutral-400 gap-3">
+            <Loader2 className="w-8 h-8 animate-spin text-white" />
+            <p className="text-xs font-mono">Connecting live channel...</p>
           </div>
         ) : filteredMessages.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-8">
-            <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-indigo-900/40 via-blue-900/30 to-purple-900/20 border border-indigo-500/20 flex items-center justify-center mb-4 shadow-2xl ring-1 ring-white/10">
-              <Sparkles className="w-9 h-9 text-indigo-400 animate-pulse" />
+            <div className="w-16 h-16 rounded-2xl bg-black border border-white/[0.12] flex items-center justify-center mb-3 shadow-md">
+              <Sparkles className="w-7 h-7 text-neutral-400" />
             </div>
-            <h3 className="text-2xl font-black text-white mb-2 tracking-tight">
-              Welcome to #{orgName || "Team"} Channel!
+            <h3 className="text-xl font-bold text-white mb-1 tracking-tight">
+              #{orgName || "Team"} Discussion Channel
             </h3>
-            <p className="text-slate-400 text-sm max-w-md leading-relaxed font-medium mb-6">
-              Start the conversation! Coordinate tasks, share updates, or announce sprint goals.
+            <p className="text-neutral-400 text-xs max-w-sm leading-relaxed mb-6">
+              Start the discussion! Share sprint updates, coordinate reviews, or flag blockers.
             </p>
 
             {/* Quick Prompt Starters */}
-            <div className="flex flex-wrap gap-2 justify-center max-w-lg">
+            <div className="flex flex-wrap gap-2 justify-center max-w-md">
               {SMART_CHIPS.map((chip, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSendMessage(chip.text)}
-                  className="px-3.5 py-2 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 hover:bg-slate-800 text-xs font-semibold text-slate-300 hover:text-white transition-all transform hover:scale-105 shadow-md flex items-center gap-1.5"
+                  className="px-3 py-1.5 rounded-xl bg-[#0c0c0e] border border-white/[0.1] hover:border-white/30 text-xs font-medium text-neutral-300 hover:text-white transition-all shadow-sm"
                 >
                   <span>{chip.label}</span>
                 </button>
@@ -287,67 +282,67 @@ export default function OrgChat({ orgId, orgName }) {
             return (
               <div
                 key={msg.id}
-                className={`group relative flex items-start gap-4 p-4 rounded-2xl transition-all duration-200 ${
+                className={`group relative flex items-start gap-3.5 p-3 rounded-xl transition-all duration-150 ${
                   isMine
-                    ? "bg-gradient-to-r from-blue-950/35 via-indigo-950/20 to-transparent border-l-3 border-blue-500 hover:bg-slate-900/50 shadow-sm"
-                    : "hover:bg-slate-900/40 border-l-3 border-transparent"
+                    ? "bg-white/[0.03] border-l-2 border-white/60"
+                    : "hover:bg-white/[0.02] border-l-2 border-transparent"
                 }`}
               >
                 {/* Avatar */}
                 <div className="relative flex-shrink-0 mt-0.5">
-                  <Avatar className="w-11 h-11 rounded-2xl ring-2 ring-slate-800 shadow-md">
+                  <Avatar className="w-9 h-9 rounded-xl border border-white/10 shadow-sm">
                     <AvatarImage src={msg.sender?.imageUrl} alt={msg.sender?.name || "User"} />
-                    <AvatarFallback className="bg-gradient-to-br from-indigo-950 to-slate-900 text-sm font-bold text-slate-200">
+                    <AvatarFallback className="bg-[#18181c] text-xs font-bold text-neutral-200">
                       {msg.sender?.name ? msg.sender.name.charAt(0).toUpperCase() : "U"}
                     </AvatarFallback>
                   </Avatar>
                   {isMsgAdmin && (
                     <span
                       title="Admin"
-                      className="absolute -top-1 -right-1 w-4 h-4 bg-purple-600 rounded-full flex items-center justify-center ring-2 ring-slate-950"
+                      className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-neutral-200 text-black rounded-full flex items-center justify-center ring-2 ring-black"
                     >
-                      <ShieldCheck className="w-2.5 h-2.5 text-white" />
+                      <ShieldCheck className="w-2 h-2" />
                     </span>
                   )}
                 </div>
 
                 {/* Message Body */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <span className="text-sm font-extrabold text-white hover:underline cursor-pointer">
+                  <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                    <span className="text-xs font-bold text-white">
                       {isMine ? "You" : msg.sender?.name || "Member"}
                     </span>
 
                     {isMsgAdmin ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.2 rounded-md bg-purple-950 text-purple-300 border border-purple-700 text-[10px] font-black uppercase tracking-wider">
+                      <span className="inline-flex items-center px-1.5 py-0.2 rounded bg-white/[0.08] text-neutral-300 border border-white/10 text-[9px] font-mono uppercase tracking-wider">
                         Admin
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded-md bg-slate-800/80 text-slate-400 border border-slate-700/60 text-[10px] font-medium">
+                      <span className="inline-flex items-center px-1.5 py-0.2 rounded bg-white/[0.04] text-neutral-500 border border-white/[0.08] text-[9px] font-mono">
                         Member
                       </span>
                     )}
 
-                    <span className="text-xs text-slate-400 font-medium">
+                    <span className="text-[10px] font-mono text-neutral-500">
                       {formatMessageDate(msg.createdAt)}
                     </span>
                   </div>
 
-                  <div className="text-[15px] text-slate-100 leading-relaxed font-normal whitespace-pre-wrap break-words">
+                  <div className="text-xs sm:text-sm text-neutral-200 leading-relaxed font-normal whitespace-pre-wrap break-words">
                     {msg.content}
                   </div>
 
-                  {/* Interactive Emoji Reaction Counters */}
+                  {/* Reaction counters */}
                   {Object.keys(msgReactions).length > 0 && (
-                    <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+                    <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
                       {Object.entries(msgReactions).map(([emoji, count]) => (
                         <button
                           key={emoji}
                           onClick={() => handleReact(msg.id, emoji)}
-                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-slate-200 hover:border-indigo-500 hover:scale-105 transition-all shadow-sm"
+                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-[#0e0e12] border border-white/10 text-xs text-neutral-300 hover:border-white/30 transition-all shadow-sm"
                         >
                           <span>{emoji}</span>
-                          <span className="text-[11px] font-bold text-indigo-400">{count}</span>
+                          <span className="text-[10px] font-mono font-bold text-neutral-200">{count}</span>
                         </button>
                       ))}
                     </div>
@@ -355,13 +350,13 @@ export default function OrgChat({ orgId, orgName }) {
                 </div>
 
                 {/* Hover Quick Action Toolbar */}
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute right-4 top-3 flex items-center gap-1 bg-slate-900/95 border border-slate-700 rounded-xl p-1 shadow-2xl backdrop-blur-md z-10">
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute right-3 top-2 flex items-center gap-1 bg-[#0c0c0e] border border-white/15 rounded-lg p-1 shadow-xl backdrop-blur-md z-10">
                   {["👍", "🔥", "🚀", "❤️"].map((emoji) => (
                     <button
                       key={emoji}
                       onClick={() => handleReact(msg.id, emoji)}
                       title={`React ${emoji}`}
-                      className="p-1 rounded-lg hover:bg-slate-800 text-xs transition-transform hover:scale-125"
+                      className="p-1 rounded hover:bg-white/10 text-xs transition-transform hover:scale-125"
                     >
                       {emoji}
                     </button>
@@ -370,9 +365,9 @@ export default function OrgChat({ orgId, orgName }) {
                     <button
                       onClick={() => handleDelete(msg.id)}
                       title="Delete message"
-                      className="p-1.5 rounded-lg hover:bg-red-950 text-slate-400 hover:text-red-400 transition-colors ml-1 border-l border-slate-800"
+                      className="p-1 rounded hover:bg-rose-500/10 text-neutral-400 hover:text-rose-400 transition-colors ml-1 border-l border-white/10"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      <Trash2 className="w-3 h-3" />
                     </button>
                   )}
                 </div>
@@ -383,19 +378,19 @@ export default function OrgChat({ orgId, orgName }) {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Modern Composer */}
-      <div className="p-4 bg-slate-950/90 border-t border-slate-800/80 backdrop-blur-2xl">
-        {/* Quick Smart Agile Chips */}
-        <div className="flex items-center gap-2 mb-3 overflow-x-auto pb-1 text-xs" style={{ scrollbarWidth: "none" }}>
-          <span className="text-slate-400 font-bold flex items-center gap-1 flex-shrink-0">
-            <Sparkles className="w-3.5 h-3.5 text-indigo-400" /> Quick Sync:
+      {/* Composer */}
+      <div className="p-3.5 bg-black/80 border-t border-white/[0.08] backdrop-blur-xl">
+        {/* Quick Smart Chips */}
+        <div className="flex items-center gap-2 mb-2.5 overflow-x-auto pb-1 text-xs" style={{ scrollbarWidth: "none" }}>
+          <span className="text-neutral-500 font-mono text-[11px] flex items-center gap-1 flex-shrink-0">
+            <Sparkles className="w-3 h-3 text-neutral-400" /> Quick Sync:
           </span>
           {SMART_CHIPS.map((chip, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => setInputText(chip.text)}
-              className="px-3 py-1 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-indigo-500/60 hover:bg-indigo-950/40 text-slate-300 hover:text-white font-medium whitespace-nowrap transition-all shadow-sm"
+              className="px-2.5 py-1 rounded-lg bg-[#0c0c0e] border border-white/[0.08] hover:border-white/25 text-neutral-400 hover:text-white font-medium whitespace-nowrap transition-all text-xs"
             >
               {chip.label}
             </button>
@@ -403,7 +398,7 @@ export default function OrgChat({ orgId, orgName }) {
         </div>
 
         {/* Input Form */}
-        <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }} className="relative flex items-center gap-3">
+        <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }} className="relative flex items-center gap-2.5">
           <div className="relative flex-1">
             <input
               type="text"
@@ -411,7 +406,7 @@ export default function OrgChat({ orgId, orgName }) {
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder={`Message #${orgName || "team"}... (Enter to send)`}
-              className="w-full bg-slate-900/90 border border-slate-800 rounded-2xl px-5 py-3.5 text-slate-100 placeholder:text-slate-500 text-[15px] font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all shadow-inner"
+              className="w-full bg-[#050507] border border-white/[0.12] rounded-xl px-4 py-3 text-neutral-100 placeholder:text-neutral-600 text-xs sm:text-sm font-medium focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/20 transition-all shadow-inner"
               disabled={isSending}
               maxLength={1000}
             />
@@ -420,14 +415,14 @@ export default function OrgChat({ orgId, orgName }) {
           <Button
             type="submit"
             disabled={!inputText.trim() || isSending}
-            className="h-12 px-6 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-extrabold text-sm shadow-xl shadow-indigo-600/30 flex items-center gap-2 transition-all transform active:scale-95 disabled:opacity-50"
+            className="h-11 px-5 rounded-xl bg-white hover:bg-neutral-200 text-black font-semibold text-xs sm:text-sm shadow-md flex items-center gap-1.5 transition-all disabled:opacity-40"
           >
             {isSending ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
+              <Loader2 className="w-4 h-4 animate-spin text-black" />
             ) : (
               <>
                 <span>Send</span>
-                <Send className="w-4 h-4" />
+                <Send className="w-3.5 h-3.5" />
               </>
             )}
           </Button>
