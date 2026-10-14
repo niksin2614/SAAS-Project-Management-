@@ -11,23 +11,26 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware((auth, req) => {
-  const authObj = auth();
-  const userId = authObj?.userId;
-  const orgId = authObj?.orgId;
+  try {
+    if (isProtectedRoute(req)) {
+      auth().protect();
+    }
 
-  if (!userId && isProtectedRoute(req)) {
-    return authObj.redirectToSignIn();
-  }
+    const { userId, orgId } = auth();
 
-  if (
-    userId &&
-    !orgId &&
-    req.nextUrl.pathname !== "/onboarding" &&
-    !req.nextUrl.pathname.startsWith("/organization") &&
-    !req.nextUrl.pathname.startsWith("/project") &&
-    req.nextUrl.pathname !== "/"
-  ) {
-    return NextResponse.redirect(new URL("/onboarding", req.url));
+    if (
+      userId &&
+      !orgId &&
+      req.nextUrl.pathname !== "/onboarding" &&
+      !req.nextUrl.pathname.startsWith("/organization") &&
+      !req.nextUrl.pathname.startsWith("/project") &&
+      req.nextUrl.pathname !== "/"
+    ) {
+      return NextResponse.redirect(new URL("/onboarding", req.nextUrl));
+    }
+  } catch (error) {
+    console.error("Middleware error:", error);
+    return NextResponse.next();
   }
 });
 
